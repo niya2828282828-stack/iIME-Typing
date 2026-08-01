@@ -14,7 +14,7 @@ const PROBLEMS = {
     "我々は宇宙人だ",
     "Hello World",
     "今日はいい天気ですね",
-    "こんにちは世界！こんにちはhello"
+    "こんにちはhello"
   ]
 };
 
@@ -117,7 +117,7 @@ function startPhase(phase) {
   if (typeof clearAllBuffers === 'function') clearAllBuffers();
 
   if (phase === 'iime') {
-    window.isImeEnabled = true;
+    window.enableIIME();
     gameInputEl.classList.add('ime-enabled');
     
     // ★ 入力欄に薄くヒントを表示する
@@ -134,7 +134,7 @@ function startPhase(phase) {
       `;
     }
   } else {
-    window.isImeEnabled = false;
+    window.disableIIME();
     gameInputEl.classList.remove('ime-enabled');
     gameInputEl.placeholder = "ここに標準入力で入力";
 

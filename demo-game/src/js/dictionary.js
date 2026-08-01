@@ -106,7 +106,7 @@ const jpDictionary = {
 // 3. 【英単語辞書】
 const englishWords = [
     //基本ワード（動詞・前置詞・代名詞・助動詞など） ---
-    "is", "am", "are", "was", "were", "be", "been", "being","world",
+    "is", "am", "are", "was", "were", "be", "been", "being",
     "do", "does", "did", "done", "doing",
     "have", "has", "had", "having",
     "at", "in", "on", "for", "to", "of", "with", "by", "from", "as", "about", "into", "through",
