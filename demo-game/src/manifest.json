@@ -1,0 +1,47 @@
+{
+  "name": "iIME",
+  "version": "1.3",
+  "manifest_version": 3,
+  "icons": {
+    "16": "img/icon.png",
+    "48": "img/icon.png",
+    "128": "img/icon.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "img/icon.png",
+      "48": "img/icon.png",
+      "128": "img/icon.png"
+    }
+  },
+  "description": "Googleの検索窓の入力を書き換えます。",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "js/inputBasicKeys.js",
+        "js/inputSpace.js",
+        "js/encodeText.js",
+        "js/dictionary.js",
+        "js/style.js",
+        "js/main.js"
+      ],
+      "css": [
+        "css/style.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "words.txt"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
