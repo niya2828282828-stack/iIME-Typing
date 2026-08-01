@@ -1,5 +1,19 @@
 // src/js/inputRouter.js
 
+// 記号関連の内部ステートを完全初期化する共通ヘルパー関数
+function resetSymbolState(state) {
+  if (!state) return;
+  state.activeBuffer = "";
+  state.lastVisualLength = 0;
+  state.candidateIndex = 0;
+  state.symbolCount = 0;             // ★ これが残ると2回に1回奇数/偶数バグが起きる
+  state.lastSymbolStrLength = 0;     // ★ 前回の記号長をリセット
+  delete state.lastSymbolKey;
+  delete state.symbolBaseBuffer;
+  delete state.isSymbolStartFullWidth;
+  delete state.isHyphenContinue;
+}
+
 document.addEventListener('keydown', (e) => {
   const target = e.target;
 
@@ -60,27 +74,28 @@ document.addEventListener('keydown', (e) => {
     return;
   }
 
-  // Enterキー（確定処理：確定時は画面の描画長も0にする）
+  // Enterキー（確定処理）
   if (e.key === 'Enter') {
     if (window.triggerGlow) {
       window.triggerGlow(target);
     }
-    if (typeof clearAllBuffers === 'function') {
-      clearAllBuffers();
-    } else if (typeof systemState !== 'undefined') {
-      systemState.activeBuffer = "";
-      systemState.lastVisualLength = 0;
-    }
+    if (typeof clearAllBuffers === 'function') clearAllBuffers();
+    if (typeof systemState !== 'undefined') resetSymbolState(systemState);
     return;
   }
 
-  // Backspaceキー（削除処理：バッファと描画長を一緒に減算・クリアする）
+  // Backspaceキー（文字削除処理）
   if (e.key === 'Backspace') {
     if (typeof systemState !== 'undefined') {
       if (systemState.activeBuffer.length > 0) {
         systemState.activeBuffer = systemState.activeBuffer.slice(0, -1);
       }
       systemState.lastVisualLength = Math.max(0, systemState.lastVisualLength - 1);
+      
+      const domLength = target.value !== undefined ? target.value.length : (target.textContent || "").length;
+      if (domLength <= 1) {
+        resetSymbolState(systemState);
+      }
     }
     return;
   }
@@ -88,7 +103,15 @@ document.addEventListener('keydown', (e) => {
   // 1文字の入力（a-z, 伸ばし棒, 記号など）
   if (key.length === 1 && key !== ' ') {
     e.preventDefault();
-    
+
+    // ★ 画面が0文字なら、記号のカウントや全トグルフラグを完全に初期化してからiIMEに渡す
+    if (typeof systemState !== 'undefined' && systemState) {
+      const domLength = target.value !== undefined ? target.value.length : (target.textContent || "").length;
+      if (domLength === 0) {
+        resetSymbolState(systemState);
+      }
+    }
+
     if (typeof window.inputBasicKeys === 'function') {
       window.inputBasicKeys(
         e, 
