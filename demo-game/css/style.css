@@ -179,3 +179,16 @@ kbd {
   font-size: 1.5rem;
   font-weight: bold;
 }
+
+/* ボタンを最前面にして確実にクリックできるようにする */
+.screen.active {
+  display: block;
+  position: relative;
+  z-index: 10;
+}
+
+.btn, .btn-mode, .btn-sub {
+  position: relative;
+  z-index: 20;
+  pointer-events: auto !important;
+}
