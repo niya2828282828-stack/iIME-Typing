@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iIME - タイピングゲーム</title>
+  <title>iIME - タイピング体験</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
   <div class="container">
@@ -16,29 +16,64 @@
       <p class="subtitle">自作IMEの操作性と変換精度をテストしよう</p>
     </header>
 
+    <div id="committed-toast" class="committed-toast" aria-live="polite"></div>
+
     <main class="demo-section">
       <div id="screen-menu" class="screen active">
-        <div class="menu-grid">
-          <button class="btn btn-mode" onclick="startGame('free')">
-            <span class="mode-title">自由試し打ち</span>
-            <span class="mode-desc">時間制限なしで自由に打感をテスト</span>
-          </button>
-          <button class="btn btn-mode" onclick="startGame('easy')">
-            <span class="mode-title">EASY モード</span>
-            <span class="mode-desc">短い単語や簡単な文章（全3問）</span>
-          </button>
-          <button class="btn btn-mode" onclick="startGame('normal')">
-            <span class="mode-title">NORMAL モード</span>
-            <span class="mode-desc">漢字変換を含む長めの文章（全3問）</span>
-          </button>
+        <div id="home-card" class="input-card">
+          <div class="card-header">
+            <span class="card-badge badge-active">iIME 自由試し打ち</span>
+            <span class="card-desc">時間制限なしで自由に入力</span>
+          </div>
+
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="home-typing-input" 
+              class="demo-input ime-enabled" 
+              placeholder="半角入力に切り替えてからご使用ください"
+              autocomplete="off"
+              autofocus
+            >
+          </div>
+
+          <div class="hint-container">
+            <span class="hint-item"><kbd>Tab</kbd> 候補切替</span>
+            <span class="hint-divider">•</span>
+            <span class="hint-item"><kbd>Space</kbd> 変換確定</span>
+            <span class="hint-divider">•</span>
+            <span class="hint-item"><kbd id="kbd-enter">Enter</kbd> 確定</span>
+          </div>
+
+          <div class="mode-selection">
+            <div class="mode-title-label">▼ 比較チャレンジモードを選択</div>
+            <div class="mode-grid">
+              <button class="btn-mode" onclick="startChallenge('easy')">
+                <span class="mode-name">EASY モード</span>
+                <span class="mode-desc">短い単語（標準 vs iIME 比較）</span>
+              </button>
+              <button class="btn-mode" onclick="startChallenge('normal')">
+                <span class="mode-name">NORMAL モード</span>
+                <span class="mode-desc">漢字変換文章（標準 vs iIME 比較）</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="screen-countdown" class="screen">
+        <div class="input-card result-card">
+          <div id="countdown-badge" class="card-badge badge-active" style="width: fit-content; margin: 0 auto 12px;">標準入力フェーズ</div>
+          <p id="countdown-msg" class="countdown-msg">最初は標準の入力で開始されます。</p>
+          <div id="countdown-number" class="countdown-number">3</div>
         </div>
       </div>
 
       <div id="screen-game" class="screen">
         <div class="input-card">
           <div class="card-header">
-            <span id="game-mode-badge" class="card-badge badge-active">EASY</span>
-            <span id="game-progress" class="card-desc">第 1 / 3 問</span>
+            <span id="game-mode-badge" class="card-badge badge-active">EASY（標準入力）</span>
+            <span id="game-progress" class="card-desc">第 1 / 5 問</span>
           </div>
 
           <div class="target-box">
@@ -48,43 +83,47 @@
           <div class="input-wrapper">
             <input 
               type="text" 
-              id="typing-input" 
-              class="demo-input ime-enabled" 
+              id="game-typing-input" 
+              class="demo-input" 
               placeholder="ここに入力して確定（Enter）"
               autocomplete="off"
             >
           </div>
 
-          <div class="hint-container">
-            <span class="hint-item"><kbd>Tab</kbd> 候補切替</span>
-            <span class="hint-divider">•</span>
-            <span class="hint-item"><kbd>Space</kbd> 変換確定</span>
-            <span class="hint-divider">•</span>
-            <span class="hint-item"><kbd>Enter</kbd> 回答確定</span>
-          </div>
+          <div class="hint-container" id="game-hints"></div>
         </div>
 
         <div style="text-align: center; margin-top: 1.5rem;">
-          <button class="btn-sub" onclick="showMenu()">← モード選択に戻る</button>
+          <button class="btn-sub" onclick="showMenu()">← ホームに戻る</button>
         </div>
       </div>
 
       <div id="screen-result" class="screen">
         <div class="input-card result-card">
-          <h2>クリアおめでとうございます！</h2>
-          <p class="result-time">タイム: <span id="final-time">0.00</span> 秒</p>
-          <button class="btn btn-mode" onclick="showMenu()" style="margin-top: 1rem;">メニューに戻る</button>
+          <h2>計測完了！</h2>
+          <div class="result-comparison-grid">
+            <div class="result-box">
+              <span class="result-label">標準入力</span>
+              <span class="result-time"><span id="standard-time">0.00</span> 秒</span>
+            </div>
+            <div class="result-box highlight">
+              <span class="result-label">iIME 入力</span>
+              <span class="result-time"><span id="iime-time">0.00</span> 秒</span>
+            </div>
+          </div>
+          <p id="diff-message" class="diff-message"></p>
+          <button class="btn-mode" onclick="showMenu()" style="margin: 20px auto 0; width: fit-content; padding: 12px 32px;">ホームに戻る</button>
         </div>
       </div>
     </main>
   </div>
 
-  <script src="js/inputBasicKeys.js"></script>
-  <script src="js/inputSpace.js"></script>
-  <script src="js/dictionary.js"></script>
-  <script src="js/encodeText.js"></script>
-  <script src="js/main.js"></script>
- 
-  <script src="js/app.js"></script>
+  <script src="src/js/inputBasicKeys.js"></script>
+  <script src="src/js/inputSpace.js"></script>
+  <script src="src/js/dictionary.js"></script>
+  <script src="src/js/encodeText.js"></script>
+  <script src="src/js/main.js"></script>
+  <script src="src/js/inputRouter.js"></script>
+  <script src="src/js/app.js"></script>
 </body>
 </html>

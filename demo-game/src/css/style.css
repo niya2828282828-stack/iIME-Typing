@@ -1,0 +1,550 @@
+:root {
+  --bg-color: #fbf9f5;
+  --text-main: #2d2a26;
+  --text-muted: #7c776e;
+  --text-light: #9e988d;
+  --accent-color: #8c6d46;
+  --accent-light: #d4a359;
+  --border-color: #e6dfd5;
+  --border-focus: #c5b49d;
+  --card-bg: #ffffff;
+  --radius: 8px;
+  --shadow-subtle: 0 4px 20px rgba(74, 65, 53, 0.05);
+  --shadow-focus: 0 6px 24px rgba(140, 109, 70, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Shippori Mincho', 'Noto Serif JP', 'Yu Mincho', YuMincho, serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ヘッダー */
+.header {
+  text-align: center;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.demo-section {
+  width: 100%;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* メイン入力カード */
+.input-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.badge-active {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* お題表示エリア */
+.target-box {
+  background: #f7f4ef;
+  border: 1px dashed var(--border-focus);
+  padding: 16px;
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.target-text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-main);
+}
+
+/* 入力欄 */
+.input-wrapper {
+  width: 100%;
+}
+
+.demo-input {
+  width: 100%;
+  padding: 18px 24px;
+  font-size: 1.2rem;
+  font-family: inherit;
+  color: var(--text-main);
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
+}
+
+.demo-input::placeholder {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+.demo-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-focus), 0 0 0 3px rgba(197, 180, 157, 0.2);
+}
+
+/* キー操作ヒント */
+.hint-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.hint-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hint-divider {
+  color: var(--border-color);
+}
+
+kbd {
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: #f0e9df;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+/* モード選択エリア（ホーム画面用） */
+.mode-selection {
+  margin-top: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.mode-title-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.btn-mode {
+  background: #fcfbfa;
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-mode:hover {
+  border-color: var(--accent-light);
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-subtle);
+}
+
+.mode-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent-color);
+}
+
+.mode-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* サブボタン */
+.btn-sub {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.btn-sub:hover {
+  color: var(--accent-color);
+}
+
+/* クリア画面 */
+.result-card {
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.result-time {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin: 16px 0;
+}
+
+/* --- 元のCSSの一番下に追加してください --- */
+
+/* トースト通知 */
+.committed-toast {
+  min-height: 38px;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  box-shadow: var(--shadow-subtle);
+  font-size: 0.9rem;
+}
+
+.committed-toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.committed-toast.toast-pop {
+  animation: toastPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes toastPop {
+  0% {
+    transform: scale(0.92) translateY(-4px);
+    box-shadow: 0 0 0 rgba(212, 163, 89, 0);
+  }
+  45% {
+    transform: scale(1.06) translateY(2px);
+    box-shadow: 0 8px 28px rgba(140, 109, 70, 0.25), 0 0 16px rgba(212, 163, 89, 0.4);
+    border-color: var(--accent-light);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    box-shadow: var(--shadow-subtle);
+    border-color: var(--border-color);
+  }
+}
+
+.toast-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  background-color: #f5eee4;
+  color: var(--accent-color);
+  border-radius: 12px;
+}
+
+.toast-text {
+  color: var(--text-main);
+  letter-spacing: 0.03em;
+  word-break: break-all;
+}
+
+/* カードのバウンドアニメーション */
+.input-card.card-enter-impact {
+  animation: cardEnterImpact 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes cardEnterImpact {
+  0% { transform: scale(1); }
+  25% { transform: scale(0.985) translateY(2px); }
+  60% { transform: scale(1.018) translateY(-2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* 確定時のショックウェーブ（光る輪郭） */
+.glow-shockwave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--radius);
+  pointer-events: none;
+  border: 2px solid rgba(212, 163, 89, 0.9);
+  animation: shockwaveExpand 0.55s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  z-index: 10;
+}
+
+@keyframes shockwaveExpand {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0px rgba(212, 163, 89, 0.6), inset 0 0 12px rgba(212, 163, 89, 0.4);
+  }
+  50% {
+    opacity: 0.85;
+    box-shadow: 0 0 24px 6px rgba(212, 163, 89, 0.35), inset 0 0 20px rgba(212, 163, 89, 0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.06);
+    box-shadow: 0 0 40px 16px rgba(212, 163, 89, 0), inset 0 0 30px rgba(212, 163, 89, 0);
+    border-color: rgba(212, 163, 89, 0);
+  }
+}
+
+/* 飛んでいく確定テキスト */
+.flying-committed-text {
+  position: fixed;
+  font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--accent-light);
+  box-shadow: 0 4px 20px rgba(140, 109, 70, 0.3), 0 0 12px rgba(212, 163, 89, 0.5);
+  pointer-events: none;
+  z-index: 10000;
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  will-change: transform, opacity, filter;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out, filter 0.6s ease-out;
+}
+
+/* キー操作ヒントのEnterキー発光 */
+kbd.kbd-active-flash {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+  transform: translateY(1px) scale(0.92);
+  box-shadow: 0 0 8px rgba(140, 109, 70, 0.5);
+}
+
+/* 確定時に飛び散る丸い粒子（パーティクル） */
+.particle-ball {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform, opacity;
+  animation: particleBurst 0.65s cubic-bezier(0.12, 0.8, 0.32, 1) forwards;
+}
+
+@keyframes particleBurst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+  }
+  60% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    /* JS側で設定したCSS変数 (--tx, --ty) に向かって飛んでいく */
+    transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0);
+  }
+}
+
+/* ミス時の赤発光アニメーション */
+@keyframes glowErrorEffect {
+  0% {
+    /* オレンジと同じ強さ・広がりで赤く発光 */
+    box-shadow: 0 0 25px rgba(255, 38, 0, 0.95), 0 0 10px rgba(255, 68, 68, 0.8), inset 0 0 12px rgba(255, 102, 102, 0.6);
+    border-color: #ff2200;
+    transform: scale(1.01);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(255, 38, 0, 0.7), inset 0 0 6px rgba(255, 68, 68, 0.3);
+    border-color: #ff4444;
+  }
+  100% {
+    box-shadow: var(--shadow-subtle);
+    border-color: var(--border-color);
+    transform: scale(1);
+  }
+}
+
+.glow-error {
+  animation: glowErrorEffect 0.45s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* --- 末尾に追加してください --- */
+
+/* カウントダウン表示 */
+.countdown-msg {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.countdown-number {
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  /* animation を削除して大きさが変わらないように固定 */
+  text-align: center;
+}
+
+/* 比較結果画面 */
+.result-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0 12px;
+}
+
+.result-box {
+  background: #f7f4ef;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-box.highlight {
+  background: #fcf8f2;
+  border-color: var(--accent-light);
+  box-shadow: 0 4px 16px rgba(140, 109, 70, 0.15);
+}
+
+.result-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.result-box.highlight .result-label {
+  color: var(--accent-color);
+}
+
+.result-time {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.result-box.highlight .result-time {
+  color: var(--accent-color);
+}
+
+.diff-message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-top: 8px;
+}
+
+/* --- iIME 入力・確定時のオレンジ発光エフェクト --- */
+.demo-input.glow-active {
+  animation: orangeGlow 0.35s ease-out forwards;
+}
+
+@keyframes orangeGlow {
+  0% {
+    border-color: #ff8c00;
+    box-shadow: 0 0 0px rgba(255, 140, 0, 0);
+  }
+  40% {
+    border-color: #ff5500;
+    /* 鮮やかなオレンジのネオン発光 */
+    box-shadow: 0 0 25px rgba(255, 140, 0, 0.95), 0 0 10px rgba(255, 85, 0, 0.8);
+  }
+  100% {
+    border-color: rgba(212, 163, 89, 0.3); /* 元の枠線色 */
+    box-shadow: 0 0 0px rgba(255, 140, 0, 0);
+  }
+}
+
+/* カチッと押した瞬間のキーボードキー演出 */
+.kbd-active-flash {
+  background-color: #ff8c00 !important;
+  color: #fff !important;
+  box-shadow: 0 0 12px #ff8c00 !important;
+  transform: translateY(2px);
+}
